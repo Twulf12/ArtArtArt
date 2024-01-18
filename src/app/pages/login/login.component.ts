@@ -4,11 +4,11 @@ import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/route
 import { AuthenticationService } from '../../_services/auth.service';
 
 @Component({
-  standalone:true,
+  standalone: true,
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  imports: [ReactiveFormsModule,RouterModule,RouterLink]
+  imports: [ReactiveFormsModule, RouterModule, RouterLink]
 })
 export class LoginComponent implements OnInit {
   loginForm = new FormGroup({
@@ -43,11 +43,12 @@ export class LoginComponent implements OnInit {
     try {
       await this.authenticationService.login(
         this.loginForm.controls['email'].value ?? '',
-        this.loginForm.controls['password'].value?? ''
+        this.loginForm.controls['password'].value ?? ''
       )
       const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
       this.router.navigateByUrl(returnUrl);
     } catch (error) {
+      alert("incorrect user")
       console.log("login button submit error,", error)
     }
   }

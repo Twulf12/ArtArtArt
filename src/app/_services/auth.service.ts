@@ -43,6 +43,9 @@ export class AuthenticationService {
     // this.user.token = token
   }
 
+  public isLoggedIn() {
+    return this.user != null
+  }
 
   async login(username: string, password: string): Promise<User> {
     try {
@@ -59,7 +62,7 @@ export class AuthenticationService {
   
   async _login(username: string, password: string): Promise<User> {
     try {
-      throw new Error("not implemented");
+      // throw new Error("not implemented");
       
       let user = new User
       // TODO: login logic, query db and check password 

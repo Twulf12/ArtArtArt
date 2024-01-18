@@ -1,0 +1,11 @@
+<div class="card">
+    <a routerLink="/art" [queryParams]="{id: id}" routerLinkActive="active"><img src="assets/img/piotr-dura-island.jpg" class="card-img-top"></a>
+    <div class="artist-name">
+        <span><h5 class="text-center" style="margin-top: 0.5rem;">
+            By
+            <a routerLink="/profile" [queryParams]="{artist_id: artist_id}">
+                <b style="text-decoration: underline;">{{artist_name || "Artist Name" }}</b>
+            </a> 
+        </h5></span>
+    </div>
+</div>

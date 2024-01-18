@@ -10,12 +10,12 @@
 
               <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                 <div class="form-outline form-white mb-4">
-                    <input type="email" id="typeEmailX" class="form-control form-control-lg" />
+                    <input [class.active]="loginForm.controls['email'].value" type="email" id="typeEmailX" formControlName="email" class="form-control form-control-lg" />
                     <label class="form-label" for="typeEmailX">Username</label>
                 </div>
 
                 <div class="form-outline form-white mb-4">
-                    <input type="password" id="typePasswordX" class="form-control form-control-lg" />
+                    <input [class.active]="loginForm.controls['password'].value" type="password" id="typePasswordX" formControlName="password" class="form-control form-control-lg" />
                     <label class="form-label" for="typePasswordX">Password</label>
                 </div>
 
@@ -24,7 +24,7 @@
             </div>
 
             <div>
-              <p class="mb-0">Don't have an account? <a href="/signup" class="text-white-50 fw-bold">Sign Up</a>
+              <p class="mb-0">Don't have an account? <a routerLink="/signup" class="text-white-50 fw-bold">Sign Up</a>
               </p>
             </div>
 
