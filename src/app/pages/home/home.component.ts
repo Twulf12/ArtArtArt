@@ -42,17 +42,17 @@ export class HomeComponent {
   }
 
   async onSubmitPost(){
-    console.log(this.postText)
-    // if (!this.selectedFile){
-    //   return
-    // }
-    // if (!this.server.user){
-    //   return
-    // }
-    // console.log("call upload!")
-    // let post = await this.server.createPost(this.server.user.id,this.postText)
-    // let fileID = await this.server.uploadFile(this.selectedFile)
-    // await this.server.createArtObject(post.id,this.server.user.id,fileID)
+    // console.log(this.postText)
+    if (!this.selectedFile){
+      return
+    }
+    if (!this.server.user){
+      return
+    }
+    console.log("call upload!")
+    let post = await this.server.createPost(this.server.user.id,this.postText)
+    let fileID = await this.server.uploadFile(this.selectedFile)
+    await this.server.createArtObject(post.id,this.server.user.id,fileID)
   }
 
 }
