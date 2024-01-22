@@ -10,4 +10,5 @@ export class PostQuery {
     text!: string;
     art_id!: string;
     artist_nickname!: string;
+    created_at!: Date;
 }

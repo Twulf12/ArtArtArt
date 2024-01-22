@@ -1,5 +1,7 @@
 import { Component,Input } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
+import { PostQuery } from '../../_models/post';
+import { Server } from '../../_services/server.service';
 
 
 @Component({
@@ -10,8 +12,14 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   styleUrl: './art-page.component.css'
 })
 export class ArtPageComponent {
-  @Input() id!: string;
-  @Input() src!: string;
-  @Input() artist_name!: string;
-  @Input() artist_id!: string;
+  post!: PostQuery;
+  constructor(
+    private route: ActivatedRoute,
+    public server: Server   
+    ) {}
+
+  async ngOnInit() {
+    const id = this.route.snapshot.queryParams['id']
+    this.post = await this.server.getPost(id)
+  }
 }

@@ -184,6 +184,30 @@ export class Server {
     return res as [PostQuery];
   }
 
+  async getPost(id:string): Promise<PostQuery> {
+    const query = `SELECT
+                      Post.*,
+                      ArtObject.id AS art_id,
+                      Artist.nickname AS artist_nickname
+                    FROM
+                        Post
+                    LEFT JOIN
+                        ArtObject ON Post.id = ArtObject.owner_id AND ArtObject.owner_type = 'post'
+                    LEFT JOIN
+                        Artist ON Post.creator_id = Artist.id
+                    WHERE Post.id = '${id}';
+                        `
+    let response = await this.execQuery(query)
+    if (!response.ok) {
+      throw new Error(await response.text())
+    }
+
+    let res = await response.json()
+    console.log("getPost res")
+    console.log(res)
+    return res[0] as PostQuery;
+  }
+
   async uploadFile(file: File): Promise<string> {
     const formData = new FormData();
     formData.append('file', file);
