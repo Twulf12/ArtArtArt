@@ -8,5 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent {
-
+  id!: string;
+  nickname!: string;
+  artist_id!: string;
 }

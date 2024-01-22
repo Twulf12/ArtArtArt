@@ -27,6 +27,12 @@ app.use(express.static('public')); // Host static files from 'public' directory
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+
+    // Handle preflight request for the /upload route
+    if (req.method === 'OPTIONS' && req.path === '/upload') {
+        res.header('Access-Control-Allow-Methods', 'POST');
+        return res.status(200).json({});
+    }
     next();
 });
 
@@ -34,7 +40,8 @@ app.use((req, res, next) => {
 const storage = multer.diskStorage({
     destination: './public/uploads/',
     filename: function (req, file, cb) {
-        cb(null, '-' + Date.now() + path.extname(file.originalname));
+        cb(null, '' + Date.now());
+        // cb(null, '' + Date.now() + path.extname(file.originalname));
     }
 });
 const upload = multer({
@@ -50,7 +57,8 @@ app.post('/upload', (req, res) => {
             console.log('File Uploaded');
             const savedFileName = req.file.filename;  // Get the saved file name
             res.send({
-                fileName: savedFileName  // Include the file name in the response
+                filename: savedFileName,  // Include the file name in the response
+                file_id: savedFileName.split(".")[0]
             });
         }
     });

@@ -5,6 +5,7 @@ import { ArtPageComponent } from './pages/art-page/art-page.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { UploadComponent } from './pages/upload/upload.component';
+import { CommissionComponent } from './pages/commission/commission.component';
 
 export const routes: Routes = [
   {
@@ -28,7 +29,7 @@ export const routes: Routes = [
     component: ProfileComponent,
   },
   {
-    path: 'upload',
-    component: UploadComponent,
+    path: 'commission',
+    component: CommissionComponent,
   },
 ];

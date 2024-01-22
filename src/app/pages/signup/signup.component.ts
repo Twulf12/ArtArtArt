@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
-import { AuthenticationService } from '../../_services/auth.service';
+import { Server } from '../../_services/server.service';
 import { HttpClientModule } from '@angular/common/http';
 
 @Component({
@@ -21,10 +21,10 @@ export class SignupComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private authenticationService: AuthenticationService
+    private server: Server
   ) {
 
-    // if (this.authenticationService.user) {
+    // if (this.server.user) {
     //   this.router.navigate(['/']);
     // }
   }
@@ -36,7 +36,7 @@ export class SignupComponent implements OnInit {
 
 
     try {
-      let result = await this.authenticationService.signup(
+      let result = await this.server.signup(
         this.signupForm.controls['email'].value ?? '',
         this.signupForm.controls['password'].value?? ''
       )

@@ -1,8 +1,11 @@
-import { Component,Injectable } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Observable, throwError } from 'rxjs';
+import { catchError, retry } from 'rxjs/operators';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { User } from '../_models/user';
+import { Post, PostQuery } from '../_models/post';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +17,7 @@ import { User } from '../_models/user';
   selector: 'PageNotFoundComponent',
   template: '',
 })
-export class AuthenticationService {
+export class Server {
 
   public user: User | null = null;
 
@@ -118,14 +121,87 @@ export class AuthenticationService {
     if (!response.ok) {
       throw new Error(await response.text())
     }
-    
+
     let res = await response.json()
     console.log("res")
     console.log(res)
-    // console.log("res.length")
-    // console.log(res.length)
-    // console.log(res.length[0])
     return true;
+  }
+
+  async createPost(userID: string, text: string): Promise<Post> {
+    const query = `INSERT INTO Post (creator_id, text, created_at)
+                    VALUES('${userID}', '${text}','${this.formatDate(new Date())}');`
+    let response = await this.execQuery(query)
+    if (!response.ok) {
+      throw new Error(await response.text())
+    }
+    let res = await response.json()
+    console.log("createPost res")
+    console.log(res)
+    let postID = res.insertId
+    const query2 = `SELECT * FROM Post WHERE id = '${postID}'`
+    response = await this.execQuery(query2)
+    if (!response.ok) {
+      throw new Error(await response.text())
+    }
+    res = await response.json()
+    return res[0] as Post;
+  }
+
+  async createArtObject(ownerID: string, artistID: string, artID: string): Promise<boolean> {
+    const query = `INSERT INTO ArtObject (id,owner_id, owner_type,author_id, created_at)
+                    VALUES('${artID}','${ownerID}', 'post','${artistID}','${this.formatDate(new Date())}');`
+    let response = await this.execQuery(query)
+    if (!response.ok) {
+      throw new Error(await response.text())
+    }
+
+    let res = await response.json()
+    console.log("res")
+    console.log(res)
+    return true;
+  }
+
+  async queryPost(): Promise<[PostQuery]> {
+    const query = `SELECT
+                      Post.*,
+                      ArtObject.id AS art_id,
+                      Artist.nickname AS artist_nickname
+                    FROM
+                        Post
+                    LEFT JOIN
+                        ArtObject ON Post.id = ArtObject.owner_id AND ArtObject.owner_type = 'post'
+                    LEFT JOIN
+                        Artist ON Post.creator_id = Artist.id;`
+    let response = await this.execQuery(query)
+    if (!response.ok) {
+      throw new Error(await response.text())
+    }
+
+    let res = await response.json()
+    console.log("queryPost res")
+    console.log(res)
+    return res as [PostQuery];
+  }
+
+  async uploadFile(file: File): Promise<string> {
+    const formData = new FormData();
+    formData.append('file', file);
+    try {
+      const response = await this.http.post<{ file_id: string }>("http://localhost:3000/upload", formData)
+        .pipe(
+          retry(3),
+          catchError(this.handleError)
+        ).toPromise()
+      if (!response || !response.file_id) {
+        throw new Error('No response or file_id is missing from the response');
+      }
+      return response.file_id;
+    }
+    catch (error) {
+      console.error('Upload failed:', error);
+      throw error; // Re-throw the error
+    }
   }
 
 
@@ -149,8 +225,25 @@ export class AuthenticationService {
     return fetch(`http://localhost:3000/execute-query`, requestOptions)
   }
 
-  formatDate(date:Date){
+  formatDate(date: Date) {
     return date.toISOString().slice(0, 19).replace('T', ' ');
   }
+
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.status === 0) {
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong.
+      console.error(
+        `Backend returned code ${error.status}, body was: `, error.error);
+    }
+    // Return an observable with a user-facing error message.
+    return throwError(
+      'Something bad happened; please try again later.');
+  }
+
 
 }

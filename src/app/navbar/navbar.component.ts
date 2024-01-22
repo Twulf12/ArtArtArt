@@ -1,6 +1,6 @@
 import { Component,inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { AuthenticationService } from '../_services/auth.service';
+import { Server } from '../_services/server.service';
 import { NgIf } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -12,18 +12,18 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent{
-  private authService: AuthenticationService = inject(AuthenticationService)
+  private server: Server = inject(Server)
   constructor(
     private router: Router,
   ){
 
   }
   isLoggedIn(){
-    // console.log(this.authService.isLoggedIn())
-    return this.authService.isLoggedIn()
+    // console.log(this.server.isLoggedIn())
+    return this.server.isLoggedIn()
   }
   Logout(){
-    this.authService.user = null
+    this.server.user = null
     this.router.navigate(['/']);
   }
 }

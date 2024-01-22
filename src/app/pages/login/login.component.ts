@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
-import { AuthenticationService } from '../../_services/auth.service';
+import { Server } from '../../_services/server.service';
 import { HttpClientModule } from '@angular/common/http';
 
 @Component({
@@ -20,10 +20,10 @@ export class LoginComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private authenticationService: AuthenticationService
+    private server: Server
   ) {
 
-    // if (this.authenticationService.user) {
+    // if (this.server.user) {
     //   this.router.navigate(['/']);
     // }
   }
@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
     // this.loading = true;
 
     try {
-      await this.authenticationService.login(
+      await this.server.login(
         this.loginForm.controls['email'].value ?? '',
         this.loginForm.controls['password'].value ?? ''
       )
