@@ -1,0 +1,6 @@
+span:empty::before {
+    content: "\200b"; 
+}
+span{
+    display:inline;
+}

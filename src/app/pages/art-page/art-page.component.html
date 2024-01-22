@@ -19,9 +19,16 @@
         <div class="col-12 bg-dark" style="height: 66vh; width: 100%;">
             image
         </div>
-        <div class="col-12 bg-white py-3 px-3">
-            <span>Artist: [Name] <strong style="margin-left: 1rem;">Post/Commission</strong></span>
-            <p>Date: [Date]</p>
+        <div class="col-12 bg-dark py-3 px-3 text-white">
+            <h5>
+              Artist: 
+              <a routerLink="/profile" [queryParams]="{artist_id: artist_id}">
+                <b class="text-white"style="text-decoration: underline;">{{artist_name || "Artist Name" }}</b>
+            </a> 
+              <strong style="margin-left: 1rem;">Post/Commission</strong>
+            </h5>
+            <p >CreatedAt: [Date]</p>
+            <p class="mt-3">(Description) Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vel libero ut nunc luctus tincidunt. Maecenas in molestie leo. Vivamus a urna ac erat scelerisque euismod</p>
         </div>
     </div>
 </div>

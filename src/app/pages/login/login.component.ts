@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
 import { AuthenticationService } from '../../_services/auth.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   standalone: true,
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  imports: [ReactiveFormsModule, RouterModule, RouterLink]
+  imports: [ReactiveFormsModule, RouterModule, RouterLink,HttpClientModule]
 })
 export class LoginComponent implements OnInit {
   loginForm = new FormGroup({
@@ -48,7 +49,7 @@ export class LoginComponent implements OnInit {
       const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
       this.router.navigateByUrl(returnUrl);
     } catch (error) {
-      alert("incorrect user")
+      // alert("incorrect user")
       console.log("login button submit error,", error)
     }
   }

@@ -1,6 +1,25 @@
 <div class="container py-5 main-content">
     <div class="row d-flex align-items-center gy-4">
 
+        <!-- <section *ngIf="this.authService.isLoggedIn()"> -->
+        <section>
+            <div class="row justify-content-center">
+                <div class="bg-dark col-6 py-3">
+                    <textarea class="w-100" style="height: 10rem;"></textarea>
+                    <div class="input-group mb-2">
+                        <input type="file" class="form-control" id="inputGroupFile02" />
+                        <!-- <label class="input-group-text text-white-50" for="inputGroupFile02">Upload</label> -->
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <!-- <div class="w-100"></div> -->
+                        <button data-mdb-ripple-init type="button" class="btn btn-primary">
+                            Post
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <div class="col-4">
             <app-art-image [artist_name]="artist_name" [id]="id" [artist_id]="artist_id"></app-art-image>
         </div>
